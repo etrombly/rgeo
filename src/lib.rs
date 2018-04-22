@@ -33,11 +33,3 @@ pub fn search<'a>(lat: f64, lon: f64) -> Option<(f64, &'a record::Record)> {
         Err(_) => None,
     }
 }
-
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
-    }
-}
