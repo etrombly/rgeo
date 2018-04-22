@@ -15,7 +15,6 @@ use record::Record;
 pub mod record;
 pub mod country;
 
-
 lazy_static! {
     static ref GEO: KdTree<Record, [f64; 2]> = {
         let encoded = include_bytes!("data/output.bin");
