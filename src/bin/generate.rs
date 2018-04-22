@@ -81,10 +81,10 @@ impl FullRecord {
 }
 
 fn main() {
-    let shape_file = File::open("data/shapes_simplified_low.json").unwrap();
-    let v: Shapes = serde_json::from_reader(shape_file).unwrap();
-    println!("{:?}", v.features.len());
-    println!("{:?} {:?}", v.features[0].properties.geonameid, v.features[0].geometry);
+    //let shape_file = File::open("data/shapes_simplified_low.json").unwrap();
+    //let v: Shapes = serde_json::from_reader(shape_file).unwrap();
+    //println!("{:?}", v.features.len());
+    //println!("{:?} {:?}", v.features[0].properties.geonameid, v.features[0].geometry);
 
     let mut csv: String = "geonameid\tname\tasciiname\talternatenames\tlatitude\tlongitude\tfeature class\tfeature code\tcountry code\tcc2\tadmin1 code\tadmin2 code\tadmin3 code\tadmin4 code\tpopulation\televation\tdem\ttimezone\tmodification date\n".to_string();
     let mut in_file = File::open("data/allCountries.txt").unwrap();
