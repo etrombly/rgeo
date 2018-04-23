@@ -16,7 +16,7 @@ pub mod record;
 pub mod country;
 
 lazy_static! {
-    static ref GEO: KdTree<Record, [f64; 2]> = {
+    static ref GEO: KdTree<f64, Record, [f64; 2]> = {
         let encoded = include_bytes!("data/output.bin");
         deserialize(&encoded[..]).unwrap()
     };
