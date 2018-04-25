@@ -3,8 +3,10 @@ authors = ["Eric Trombly <etrombly@yahoo.com>"]
 name = "rgeo"
 version = "0.1.0"
 description = "Offline reverse geocoding library using geonames db"
-license = "mit"
+keywords = ["reverse", "geocode", "geocoding", "geo", "location"]
+license = "MIT OR Apache-2.0"
 repository = "https://github.com/etrombly/rgeo"
+readme = "README.md"
 
 [dependencies]
 bincode = "1.0.0"
