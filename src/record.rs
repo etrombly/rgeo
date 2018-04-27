@@ -1,7 +1,7 @@
 #[derive(Debug, Deserialize, Serialize)]
 /// parsed country
 pub struct Record {
-    /// country name
+    /// location name
     pub name: String,
     /// latitude
     pub latitude: f64,
