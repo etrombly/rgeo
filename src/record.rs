@@ -7,7 +7,7 @@ pub struct Record {
     pub latitude: f32,
     /// longitude
     pub longitude: f32,
-    #[serde(rename="country code")]
+    #[serde(rename = "country code")]
     /// country code from geonamedb
     pub country: String,
 }

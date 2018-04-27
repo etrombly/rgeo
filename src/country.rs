@@ -5,7 +5,7 @@ pub struct Country {
     pub geonameid: u32,
     /// name
     pub name: String,
-    #[serde(rename="country code")]
+    #[serde(rename = "country code")]
     /// country code from geonamedb
     pub country: String,
 }

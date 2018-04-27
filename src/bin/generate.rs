@@ -1,5 +1,5 @@
-extern crate csv;
 extern crate bincode;
+extern crate csv;
 extern crate kdtree;
 extern crate rgeo;
 extern crate serde;
@@ -8,12 +8,12 @@ extern crate serde_derive;
 extern crate serde_json;
 
 //use std::collections::HashMap;
-use std::fs::File;
-use std::io::prelude::*;
-use csv::ReaderBuilder;
 use bincode::serialize;
+use csv::ReaderBuilder;
 use kdtree::KdTree;
 use rgeo::record::Record;
+use std::fs::File;
+use std::io::prelude::*;
 //use rgeo::country::Country;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -22,16 +22,21 @@ struct FullRecord {
     name: String,
     latitude: f32,
     longitude: f32,
-    #[serde(rename="feature code")]
+    #[serde(rename = "feature code")]
     feature_code: String,
-    #[serde(rename="country code")]
+    #[serde(rename = "country code")]
     country: String,
     population: i64,
 }
 
 impl FullRecord {
-    fn to_record(self) -> Record {
-        Record{ name: self.name, latitude: self.latitude, longitude: self.longitude, country: self.country }
+    fn into_record(self) -> Record {
+        Record {
+            name: self.name,
+            latitude: self.latitude,
+            longitude: self.longitude,
+            country: self.country,
+        }
     }
 
     //fn to_country(self) -> Country {
@@ -49,8 +54,8 @@ fn main() {
     //let mut countries: HashMap<u32, Country> = HashMap::new();
 
     let mut rdr = ReaderBuilder::new()
-         .delimiter(b'\t')
-         .from_reader(csv.as_bytes());
+        .delimiter(b'\t')
+        .from_reader(csv.as_bytes());
 
     for result in rdr.deserialize() {
         // Notice that we need to provide a type hint for automatic
@@ -60,7 +65,8 @@ fn main() {
         //    countries.insert(record.geonameid, record.to_country());
         //}
         if record.population > 100 {
-            tree.add([record.latitude, record.longitude], record.to_record()).unwrap();
+            tree.add([record.latitude, record.longitude], record.into_record())
+                .unwrap();
         }
     }
 
