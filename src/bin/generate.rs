@@ -20,8 +20,8 @@ use rgeo::record::Record;
 struct FullRecord {
     geonameid: u32,
     name: String,
-    latitude: f64,
-    longitude: f64,
+    latitude: f32,
+    longitude: f32,
     #[serde(rename="feature code")]
     feature_code: String,
     #[serde(rename="country code")]
