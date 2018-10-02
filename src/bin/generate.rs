@@ -7,14 +7,20 @@ extern crate serde;
 extern crate serde_derive;
 extern crate serde_json;
 
-//use std::collections::HashMap;
 use bincode::serialize;
 use csv::ReaderBuilder;
 use kdtree::KdTree;
 use rgeo::record::Record;
 use std::fs::File;
 use std::io::prelude::*;
-//use rgeo::country::Country;
+use std::collections::HashMap;
+
+#[derive(Debug, Serialize, Deserialize)]
+struct CountryCode {
+    name: String,
+    #[serde(rename = "alpha-2")]
+    code: String,
+}
 
 #[derive(Debug, Deserialize, Serialize)]
 struct FullRecord {
@@ -45,13 +51,22 @@ impl FullRecord {
 }
 
 fn main() {
-    let mut csv: String = "geonameid\tname\tasciiname\talternatenames\tlatitude\tlongitude\tfeature class\tfeature code\tcountry code\tcc2\tadmin1 code\tadmin2 code\tadmin3 code\tadmin4 code\tpopulation\televation\tdem\ttimezone\tmodification date\n".to_string();
+    let mut country_file = File::open("data/countries_iso.csv").unwrap();
+    let mut csv = "".to_string();
+    country_file.read_to_string(&mut csv).unwrap();
+    let mut rdr = ReaderBuilder::new()
+        .from_reader(csv.as_bytes());
+    let mut codes = HashMap::new();
+    for result in rdr.deserialize() {
+        let record: CountryCode = result.unwrap();
+        codes.insert(record.code, record.name);
+    }
+
+    let mut csv = "geonameid\tname\tasciiname\talternatenames\tlatitude\tlongitude\tfeature class\tfeature code\tcountry code\tcc2\tadmin1 code\tadmin2 code\tadmin3 code\tadmin4 code\tpopulation\televation\tdem\ttimezone\tmodification date\n".to_string();
     let mut in_file = File::open("data/allCountries.txt").unwrap();
     in_file.read_to_string(&mut csv).unwrap();
 
     let mut tree = KdTree::new(2);
-
-    //let mut countries: HashMap<u32, Country> = HashMap::new();
 
     let mut rdr = ReaderBuilder::new()
         .delimiter(b'\t')
@@ -65,7 +80,11 @@ fn main() {
         //    countries.insert(record.geonameid, record.to_country());
         //}
         if record.population > 100 {
-            tree.add([record.latitude, record.longitude], record.into_record())
+            let mut record = record.into_record();
+            if codes.contains_key(&record.country){
+                record.country = codes[&record.country].clone();
+            }
+            tree.add([record.latitude, record.longitude], record)
                 .unwrap();
         }
     }
