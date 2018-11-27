@@ -21,10 +21,12 @@ extern crate kdtree;
 extern crate lazy_static;
 
 use bincode::deserialize;
-use kdtree::distance::squared_euclidean;
-use kdtree::KdTree;
+use kdtree::{
+    distance::squared_euclidean,
+    KdTree
+};
 
-use record::Record;
+use crate::record::Record;
 
 /// goenamedb entry
 pub mod country;
@@ -41,11 +43,13 @@ lazy_static! {
 /// search for closest record to target lat/long returns Option<distance, record>
 pub fn search<'a>(lat: f32, lon: f32) -> Option<(f32, &'a record::Record)> {
     match GEO.nearest(&[lat, lon], 1, &squared_euclidean) {
-        Ok(x) => if x.is_empty() {
-            None
-        } else {
-            Some(x[0])
-        },
+        Ok(x) => {
+            if x.is_empty() {
+                None
+            } else {
+                Some(x[0])
+            }
+        }
         Err(_) => None,
     }
 }
@@ -53,11 +57,13 @@ pub fn search<'a>(lat: f32, lon: f32) -> Option<(f32, &'a record::Record)> {
 /// search for closest records to target lat/long returns Option<distance, record>
 pub fn nearest<'a>(lat: f32, lon: f32, number: usize) -> Option<Vec<(f32, &'a record::Record)>> {
     match GEO.nearest(&[lat, lon], number, &squared_euclidean) {
-        Ok(x) => if x.is_empty() {
-            None
-        } else {
-            Some(x)
-        },
+        Ok(x) => {
+            if x.is_empty() {
+                None
+            } else {
+                Some(x)
+            }
+        }
         Err(_) => None,
     }
 }
