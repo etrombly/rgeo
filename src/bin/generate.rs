@@ -1,19 +1,13 @@
-extern crate bincode;
-extern crate csv;
-extern crate kdtree;
-extern crate rgeo;
-extern crate serde;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
-
+use serde_derive::{Serialize, Deserialize};
 use bincode::serialize;
 use csv::ReaderBuilder;
 use kdtree::KdTree;
 use rgeo::record::Record;
-use std::collections::HashMap;
-use std::fs::File;
-use std::io::prelude::*;
+use std::{
+    collections::HashMap,
+    fs::File,
+    io::prelude::*
+};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct CountryCode {

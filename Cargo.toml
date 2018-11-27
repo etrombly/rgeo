@@ -1,7 +1,7 @@
 [package]
 authors = ["Eric Trombly <etrombly@yahoo.com>"]
 name = "rgeo"
-version = "0.2.1"
+version = "0.2.2"
 description = "Offline reverse geocoding library using geonames db"
 keywords = ["reverse", "geocode", "geocoding", "geo", "location"]
 license = "MIT OR Apache-2.0"

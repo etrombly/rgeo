@@ -1,3 +1,5 @@
+use serde_derive::{Serialize, Deserialize};
+
 #[derive(Debug, Deserialize, Serialize)]
 /// goenamedb entry
 pub struct Country {

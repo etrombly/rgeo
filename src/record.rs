@@ -1,3 +1,5 @@
+use serde_derive::{Serialize, Deserialize};
+
 #[derive(Debug, Deserialize, Serialize)]
 /// parsed country
 pub struct Record {
