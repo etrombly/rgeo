@@ -1,11 +1,5 @@
-extern crate bincode;
-extern crate csv;
-extern crate kdtree;
-extern crate rgeo;
-extern crate serde;
 #[macro_use]
 extern crate serde_derive;
-extern crate serde_json;
 
 use bincode::serialize;
 use csv::ReaderBuilder;

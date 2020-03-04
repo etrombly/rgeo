@@ -12,11 +12,8 @@
 //!// Some((0.0001186200820000013, Record { name: "Village of Waterbury", latitude: 44.34279, longitude: -72.74294, country: "US" }))
 //!```
 
-extern crate serde;
 #[macro_use]
 extern crate serde_derive;
-extern crate bincode;
-extern crate kdtree;
 #[macro_use]
 extern crate lazy_static;
 

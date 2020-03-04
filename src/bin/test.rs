@@ -1,5 +1,3 @@
-extern crate rgeo;
-
 use rgeo::*;
 
 fn main() {
