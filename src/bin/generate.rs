@@ -5,9 +5,9 @@ use bincode::serialize;
 use csv::ReaderBuilder;
 use kdtree::KdTree;
 use rgeo::record::Record;
+use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
-use std::collections::HashMap;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct CountryCode {
@@ -48,8 +48,7 @@ fn main() {
     let mut country_file = File::open("data/countries_iso.csv").unwrap();
     let mut csv = "".to_string();
     country_file.read_to_string(&mut csv).unwrap();
-    let mut rdr = ReaderBuilder::new()
-        .from_reader(csv.as_bytes());
+    let mut rdr = ReaderBuilder::new().from_reader(csv.as_bytes());
     let mut codes = HashMap::new();
     for result in rdr.deserialize() {
         let record: CountryCode = result.unwrap();
@@ -75,7 +74,7 @@ fn main() {
         //}
         if record.population > 100 {
             let mut record = record.into_record();
-            if codes.contains_key(&record.country){
+            if codes.contains_key(&record.country) {
                 record.country = codes[&record.country].clone();
             }
             tree.add([record.latitude, record.longitude], record)

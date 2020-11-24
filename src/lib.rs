@@ -8,7 +8,7 @@
 //!extern crate rgeo;
 //!use rgeo::search;
 //!
-//!search(44.353339_f64, -72.740231_f64);
+//!search(44.353339_f32, -72.740231_f32);
 //!// Some((0.0001186200820000013, Record { name: "Village of Waterbury", latitude: 44.34279, longitude: -72.74294, country: "US" }))
 //!```
 
@@ -38,11 +38,13 @@ lazy_static! {
 /// search for closest record to target lat/long returns Option<distance, record>
 pub fn search<'a>(lat: f32, lon: f32) -> Option<(f32, &'a record::Record)> {
     match GEO.nearest(&[lat, lon], 1, &squared_euclidean) {
-        Ok(x) => if x.is_empty() {
-            None
-        } else {
-            Some(x[0])
-        },
+        Ok(x) => {
+            if x.is_empty() {
+                None
+            } else {
+                Some(x[0])
+            }
+        }
         Err(_) => None,
     }
 }
@@ -50,11 +52,13 @@ pub fn search<'a>(lat: f32, lon: f32) -> Option<(f32, &'a record::Record)> {
 /// search for closest records to target lat/long returns Option<distance, record>
 pub fn nearest<'a>(lat: f32, lon: f32, number: usize) -> Option<Vec<(f32, &'a record::Record)>> {
     match GEO.nearest(&[lat, lon], number, &squared_euclidean) {
-        Ok(x) => if x.is_empty() {
-            None
-        } else {
-            Some(x)
-        },
+        Ok(x) => {
+            if x.is_empty() {
+                None
+            } else {
+                Some(x)
+            }
+        }
         Err(_) => None,
     }
 }
