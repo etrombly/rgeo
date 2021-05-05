@@ -1,6 +1,6 @@
 # rgeo
 
-Rust library for reverse geocoding. Uses data from the geonames database. http://www.geonames.org/
+Rust library for reverse geocoding. Uses data from the geonames database. http://www.geonames.org/ (http://download.geonames.org/export/dump/allCountries.zip)
 
 Usage:
 ```

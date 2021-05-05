@@ -4,7 +4,7 @@ extern crate serde_derive;
 use bincode::serialize;
 use csv::ReaderBuilder;
 use kdtree::KdTree;
-use rgeo::record::Record;
+use rgeo::record::{Record, Nvec};
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::prelude::*;
@@ -33,8 +33,7 @@ impl FullRecord {
     fn into_record(self) -> Record {
         Record {
             name: self.name,
-            latitude: self.latitude,
-            longitude: self.longitude,
+            nvec: Nvec::from_lat_long(self.latitude, self.longitude),
             country: self.country,
         }
     }
@@ -59,7 +58,7 @@ fn main() {
     let mut in_file = File::open("data/allCountries.txt").unwrap();
     in_file.read_to_string(&mut csv).unwrap();
 
-    let mut tree = KdTree::new(2);
+    let mut tree = KdTree::new(3);
 
     let mut rdr = ReaderBuilder::new()
         .delimiter(b'\t')
@@ -77,7 +76,7 @@ fn main() {
             if codes.contains_key(&record.country) {
                 record.country = codes[&record.country].clone();
             }
-            tree.add([record.latitude, record.longitude], record)
+            tree.add([record.nvec.x, record.nvec.y, record.nvec.z], record)
                 .unwrap();
         }
     }

@@ -18,10 +18,10 @@ extern crate serde_derive;
 extern crate lazy_static;
 
 use bincode::deserialize;
-use kdtree::distance::squared_euclidean;
 use kdtree::KdTree;
+use num_traits::{cast::FromPrimitive, float::Float};
 
-use record::Record;
+use record::{Record, Nvec};
 
 /// goenamedb entry
 pub mod country;
@@ -29,15 +29,29 @@ pub mod country;
 pub mod record;
 
 lazy_static! {
-    static ref GEO: KdTree<f32, Record, [f32; 2]> = {
+    static ref GEO: KdTree<f32, Record, [f32; 3]> = {
         let encoded = include_bytes!("data/output.bin");
         deserialize(&encoded[..]).unwrap()
     };
 }
 
+/// calculate the dot product of two nvecs
+pub fn dot<T: Float + FromPrimitive>(left: &[T], right: &[T]) -> T  {
+    let x = left[0] * right[0];
+    let y = left[1] * right[1];
+    let z = left[2] * right[2];
+    x + y + z
+}
+
+/// calculate the great circle distance between two nvecs
+pub fn distance<T: Float + FromPrimitive>(left: &[T], right: &[T]) -> T {
+    dot(left, right).acos() * T::from_f32(3_958.8_f32).unwrap()
+}
+
 /// search for closest record to target lat/long returns Option<distance, record>
 pub fn search<'a>(lat: f32, lon: f32) -> Option<(f32, &'a record::Record)> {
-    match GEO.nearest(&[lat, lon], 1, &squared_euclidean) {
+    let nvec = Nvec::from_lat_long(lat, lon);
+    match GEO.nearest(&[nvec.x, nvec.y, nvec.z], 1, &distance) {
         Ok(x) => {
             if x.is_empty() {
                 None
@@ -51,7 +65,8 @@ pub fn search<'a>(lat: f32, lon: f32) -> Option<(f32, &'a record::Record)> {
 
 /// search for closest records to target lat/long returns Option<distance, record>
 pub fn nearest<'a>(lat: f32, lon: f32, number: usize) -> Option<Vec<(f32, &'a record::Record)>> {
-    match GEO.nearest(&[lat, lon], number, &squared_euclidean) {
+    let nvec = Nvec::from_lat_long(lat, lon);
+    match GEO.nearest(&[nvec.x, nvec.y, nvec.z], number, &distance) {
         Ok(x) => {
             if x.is_empty() {
                 None
