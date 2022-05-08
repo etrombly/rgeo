@@ -1,4 +1,4 @@
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq)]
 /// parsed country
 pub struct Record {
     /// location name
@@ -11,7 +11,7 @@ pub struct Record {
 }
 
 /// n vector representation of location
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Nvec {
     /// x coordinate
     pub x: f32,

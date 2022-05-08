@@ -3,7 +3,7 @@ extern crate serde_derive;
 
 use bincode::serialize;
 use csv::ReaderBuilder;
-use kdtree::KdTree;
+use kiddo::KdTree;
 use rgeo::record::{Record, Nvec};
 use std::collections::HashMap;
 use std::fs::File;
@@ -58,7 +58,7 @@ fn main() {
     let mut in_file = File::open("data/allCountries.txt").unwrap();
     in_file.read_to_string(&mut csv).unwrap();
 
-    let mut tree = KdTree::new(3);
+    let mut tree = KdTree::new();
 
     let mut rdr = ReaderBuilder::new()
         .delimiter(b'\t')
@@ -76,7 +76,7 @@ fn main() {
             if codes.contains_key(&record.country) {
                 record.country = codes[&record.country].clone();
             }
-            tree.add([record.nvec.x, record.nvec.y, record.nvec.z], record)
+            tree.add(&[record.nvec.x, record.nvec.y, record.nvec.z], record)
                 .unwrap();
         }
     }
