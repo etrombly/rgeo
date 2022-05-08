@@ -1,13 +1,32 @@
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, PartialEq)]
 /// parsed country
 pub struct Record {
     /// location name
     pub name: String,
-    /// latitude
-    pub latitude: f32,
-    /// longitude
-    pub longitude: f32,
+    /// unit vector
+    pub nvec: Nvec,
     #[serde(rename = "country code")]
     /// country code from geonamedb
     pub country: String,
+}
+
+/// n vector representation of location
+#[derive(Debug, Serialize, Deserialize, PartialEq)]
+pub struct Nvec {
+    /// x coordinate
+    pub x: f32,
+    /// y coordinate
+    pub y: f32,
+    /// z coordinate
+    pub z: f32,
+}
+
+impl Nvec {
+    /// convert from lat long to n vector
+    pub fn from_lat_long(lat: f32, long: f32) -> Nvec {
+        let x = lat.to_radians().cos() * long.to_radians().cos();
+        let y = lat.to_radians().cos() * long.to_radians().sin();
+        let z = lat.to_radians().sin();
+        Nvec{x,y,z}
+    }
 }

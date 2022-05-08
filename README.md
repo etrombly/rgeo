@@ -1,6 +1,6 @@
 # rgeo
 
-Rust library for reverse geocoding. Uses data from the geonames database. http://www.geonames.org/
+Rust library for reverse geocoding. Uses data from the geonames database. http://www.geonames.org/ (http://download.geonames.org/export/dump/allCountries.zip)
 
 Usage:
 ```
@@ -15,3 +15,27 @@ nearest(44.353_339_f32, -72.740_231_f32, 6);
 ```
 
 The offline data takes about 19M with the default settings. Locations with a population of less than 100 aren't included.
+
+Benchmarks:
+
+with kdtree:
+```
+search                  time:   [1.2217 us 1.2234 us 1.2254 us]                    
+    Found 16 outliers among 100 measurements (16.00%)
+    3 (3.00%) high mild
+    13 (13.00%) high severe
+```
+
+with kiddo:
+```
+search                  time:   [726.85 ns 730.24 ns 736.53 ns]                    
+                        change: [-40.476% -40.291% -40.076%] (p = 0.00 < 0.05)
+                        Performance has improved.
+```
+
+with kiddo and nearest_one:
+```
+search                  time:   [490.32 ns 492.09 ns 494.60 ns]                     
+                        change: [-32.854% -32.427% -31.970%] (p = 0.00 < 0.05)
+                        Performance has improved.
+```
